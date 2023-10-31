@@ -1,0 +1,9 @@
+- hosts: webservers
+  tasks:
+    - name: create a file after becoming user 'ubuntu'
+      become_user: ubuntu
+      copy: 
+        content: |
+          Hi this is only to check and create a file becoming user 'ubuntu'
+          This is very satisfying to write this as it is start of my things fulfilling
+        dest: /home/ubuntu/become_user_ex

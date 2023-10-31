@@ -1,0 +1,18 @@
+- hosts: webservers
+  gather_facts: true
+  tasks:
+    - name: Download package from apt
+      apt:
+        update_cache: true
+        name: "{{ item }}"
+        state: latest
+        loop:
+          - python-is-python3
+          - python3-pip
+          - virtualenv
+    - name: Creating an environment and activating
+      shell:
+        
+    - name: Download repo from the github
+    - name: moving the 'ramcov4' out to 
+    

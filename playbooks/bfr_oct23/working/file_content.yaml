@@ -1,4 +1,4 @@
-- hosts: app_servers
+- hosts: webservers
   become: yes
   gather_facts: yes
   tasks:

@@ -1,7 +1,0 @@
----
-- name: Installing Nexus and SonarQube
-  hosts: nexus_servers:sonar_servers
-  become: true
-  
-
-...
