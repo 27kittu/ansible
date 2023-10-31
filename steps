@@ -1,9 +1,9 @@
 ssh-keygen
 ssh-copy-id ansible@ip
 mkdir -p \
-./inventory/prod/{group_vars, host_vars} \
-#inventory/stage/{group_vars, host_vars} \
-./inventory/test/{group_vars, host_vars}
+./inventory/prod/{group_vars,host_vars} \
+#inventory/stage/{group_vars,host_vars} \
+./inventory/test/{group_vars,host_vars}
 
 mkdir playbooks roles
 
