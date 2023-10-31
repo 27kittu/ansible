@@ -1,7 +1,7 @@
-[webservers]
+[nexusservers]
 3.95.232.14 ansible_user=ubuntu ansible_ssh_private_key_file=../../explorer.pem
 
-[dbservers]
+[sonarservers]
 18.215.239.144
 
 [appservers]
