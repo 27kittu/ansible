@@ -1,0 +1,24 @@
+- hosts: webservers
+  become: true
+  gather_facts: true
+  tasks:
+  - name: Update the 'apt' packages
+    apt: 
+      update_cache: true
+      name: apache2
+      state: latest
+  - name: Creating a page for apache server
+    copy:
+      content: |
+        <html>
+          <body>
+            <h1> Yes, it's working</h1>
+          </body>
+        </html>
+      dest: /var/www/html/index.html
+  - name: Create a service for the server
+    service:
+      name: apache2
+      enabled: true
+      state: restarted
+      
