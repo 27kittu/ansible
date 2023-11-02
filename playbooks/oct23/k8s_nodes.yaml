@@ -4,39 +4,38 @@
   tasks:
     - name: Switching the swap off
       shell: | 
-        swapoff -a
+        swapoff -a 
         sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
     - name: Installing packages for container Runtime(Containerd)
       apt: 
-        update_cache: true
-        name: "{{ item }}"
-        state: latest
-        loop: 
-          - ca-certificates 
+        name:
+          - ca-certificates
           - curl 
           - gnupg 
           - lsb-release
+        state: latest
     - name: Create a directory for keyrings to add repo for containerd
       file:
         dest: /etc/apt/keyrings
         owner: root
         group: root
-    - name: Adding the gpg key into the keyrings
-      command: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --yes --dearmor -o /etc/apt/keyrings/docker.gpg
-    - name: Adding the repo url to the updates
-      command: echo   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+        state: directory
+    - name: Adding the gpg key into the keyrings && Adding the repo url to the updates
+      shell: |
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+        echo   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
     - name: Installing Containerd
       apt: 
         update_cache: true
         name: containerd.io
         state: latest
-    - name: Configuring Containerd
-      command: containerd config default > /etc/containerd/config.toml
-    - name: Update the cgroup as systemd for containerd
-      command: sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
+    - name: Configuring Containerd and Update the cgroup as systemd for containerd
+      shell: |
+        containerd config default > /etc/containerd/config.toml
+        sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
     - name: creating service for containerd
       service:
-        name: containerd
+        name: containerd.service
         state: restarted
         enabled: true
     - name: Add  kernel settings & Enable IP tables(CNI Prerequisites)
@@ -61,25 +60,23 @@
     - name: Installing packages for installing kubeadm, kubelet and kubectl 
       apt: 
         update_cache: true
-        name: " {{ item }} "
-        state: latest
-        loop:
+        name: 
           - apt-transport-https
           - ca-certificates
           - curl
-    - name: Adding the Google Cloud public signing key of k8s repo
-      command: curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --yes --dearmor -o /etc/apt/keyrings/kubernetes-archive-keyring.gpg
-    - name: Adding the k8s repo
-      command: echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+        state: latest
+    - name: Adding the Google Cloud public signing key of k8s repo and Adding the k8s repo
+      shell: |
+        curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-archive-keyring.gpg
+        echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
     - name: Update apt package index, install kubelet, kubeadm and kubectl, and pin their version
       apt: 
         update_cache: true
-        name: " {{ item }} "
-        state: latest
-        loop: 
+        name:
           - kubelet
           - kubeadm
           - kubectl
+        state: latest
     - name: apt-mark hold will prevent the package from being automatically upgraded or removed.
       command: apt-mark hold kubelet kubeadm kubectl
     - name: Enable and start kubelet service
