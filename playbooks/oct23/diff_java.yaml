@@ -1,0 +1,9 @@
+- hosts: sonarservers:nexusservers
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Installing different Java versions
+      apt:
+        name: "{{ java_version }}"
+        state: latest
+ 
