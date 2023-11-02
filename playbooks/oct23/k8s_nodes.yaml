@@ -1,0 +1,89 @@
+- hosts: webservers
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Switching the swap off
+      shell: | 
+        swapoff -a
+        sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+    - name: Installing packages for container Runtime(Containerd)
+      apt: 
+        update_cache: true
+        name: "{{ item }}"
+        state: latest
+        loop: 
+          - ca-certificates 
+          - curl 
+          - gnupg 
+          - lsb-release
+    - name: Create a directory for keyrings to add repo for containerd
+      file:
+        dest: /etc/apt/keyrings
+        owner: root
+        group: root
+    - name: Adding the gpg key into the keyrings
+      command: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --yes --dearmor -o /etc/apt/keyrings/docker.gpg
+    - name: Adding the repo url to the updates
+      command: echo   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    - name: Installing Containerd
+      apt: 
+        update_cache: true
+        name: containerd.io
+        state: latest
+    - name: Configuring Containerd
+      command: containerd config default > /etc/containerd/config.toml
+    - name: Update the cgroup as systemd for containerd
+      command: sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
+    - name: creating service for containerd
+      service:
+        name: containerd
+        state: restarted
+        enabled: true
+    - name: Add  kernel settings & Enable IP tables(CNI Prerequisites)
+      copy:
+        dest: /etc/modules-load.d/k8s.conf
+        content: | 
+          overlay
+          br_netfilter
+    - name: execute the file
+      shell: | 
+        modprobe overlay
+        modprobe br_netfilter
+    - name: Adding content to file /etc/sysctl.d/k8s.conf
+      copy:
+        dest:  /etc/sysctl.d/k8s.conf
+        content: |
+          net.bridge.bridge-nf-call-iptables  = 1
+          net.bridge.bridge-nf-call-ip6tables = 1
+          net.ipv4.ip_forward                 = 1
+    - name: executing above commands for effect
+      command: sysctl --system
+    - name: Installing packages for installing kubeadm, kubelet and kubectl 
+      apt: 
+        update_cache: true
+        name: " {{ item }} "
+        state: latest
+        loop:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+    - name: Adding the Google Cloud public signing key of k8s repo
+      command: curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --yes --dearmor -o /etc/apt/keyrings/kubernetes-archive-keyring.gpg
+    - name: Adding the k8s repo
+      command: echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+    - name: Update apt package index, install kubelet, kubeadm and kubectl, and pin their version
+      apt: 
+        update_cache: true
+        name: " {{ item }} "
+        state: latest
+        loop: 
+          - kubelet
+          - kubeadm
+          - kubectl
+    - name: apt-mark hold will prevent the package from being automatically upgraded or removed.
+      command: apt-mark hold kubelet kubeadm kubectl
+    - name: Enable and start kubelet service
+      service:
+        name: kubelet.service
+        state: restarted
+        enabled: true
