@@ -7,24 +7,3 @@
         name: "{{ java_version }}"
         state: latest
  
-- name: Download, configure and install Nexus
-  hosts: nexusservers
-  become: true
-  tasks:
-    - name: Create nexus user
-      user:
-        name: nexus
-        group: nexus
-        
-    - name: Download nexus server package from off. site
-      get_url:
-        url: https://download.sonatype.com/nexus/3/nexus-3.61.0-02-unix.tar.gz
-        dest: /opt
-    - name: unzip the nexus tar file  
-      unarchive:
-        src: /opt/nexus-3.61.0-02-unix.tar.gz
-        dest: /opt/nexus
-        remote_src: true
-        mode: '0777'
-    - name: starting the nexus server
-      command: sh /opt/nexus/bin/nexus
