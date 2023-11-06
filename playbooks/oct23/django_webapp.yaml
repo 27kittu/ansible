@@ -1,34 +1,26 @@
-- hosts: webservers
-  gather_facts: true
+- hosts: nexusservers
+  gather_facts: false
+  become: true
   tasks:
     - name: Download package from apt
       apt:
         update_cache: true
-        name: "{{ item }}"
-        state: latest
-        loop:
+        name: 
           - python-is-python3
           - python3-pip
           - virtualenv
-          - git 
-          - curl 
-    - name: Creating an environment and activating
-      shell: |
-        virtualenv -p python /home/ubuntu/env
-        source /home/ubuntu/env/bin/activate
-        cd /home/ubuntu
-        # After downloading
-        mv /home/ubuntu/everest/ramcov4 /home/ubuntu/
-        
-        
+          - curl
+        state: latest 
     - name: Download repo from the github
-    - name: moving the 'ramcov4' out to 
-    - name: starting the application
-      shell:
-        python manage.py runserver 0.0.0.0:8000
-      notify:
-        - Restart django server
-  handlers:
-    - name: Restart django server
-      service:
-        name: 
+      git: 
+        repo: git@github.com:27kittu/everest.git
+        dest: /home/ansible/
+        clone: true
+        #accept_hostkey: yes
+        key_file: /home/ansible/.ssh/id_rsa
+    - name: moving the ramco4 dir to $Home/
+      copy:
+        remote_src: true
+        src: /home/ansible/everest/ramcov4
+        dest: /home/ansible/
+    - name: 

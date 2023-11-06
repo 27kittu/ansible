@@ -1,0 +1,8 @@
+---
+# tasks file for update_hosts
+- name: Updating hosts
+  apt: 
+    update_cache: true
+    name: 
+      - net-tools
+    state: latest
