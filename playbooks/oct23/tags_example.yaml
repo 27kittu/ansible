@@ -1,0 +1,33 @@
+- hosts: nexusservers
+  become: true
+  gather_facts: true
+  tasks:
+    - name: updating the packages
+      tags: 
+        - install
+      apt: 
+        update_cache: true
+    - name: Installing packages
+      tags: 
+        - install
+      apt: 
+        name:
+          - curl
+          - wget
+          - tar
+          - zip 
+          - net-tools
+          - git
+    - name: Creating a group
+      tags: 
+        - user
+        - create
+      group:
+        name: docker
+    - name: adding a user
+      tags: 
+        - user
+      user:
+        name: docker
+        group: docker
+        shell: /bin/bash

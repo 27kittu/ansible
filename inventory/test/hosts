@@ -1,15 +1,18 @@
 [nexusservers]
-54.159.112.130 ansible_user=ubuntu ansible_ssh_private_key_file=/home/ansible/ansible/explorer.pem
+#54.159.112.130 ansible_user=ubuntu ansible_ssh_private_key_file=/home/ansible/ansible/explorer.pem
+#54.174.190.186
 
 [sonarservers]
-54.224.184.182
+#54.224.184.182
+#100.24.13.113
 
 [appservers]
-172.31.18.146
+#172.31.18.146
 
 [webservers]
-54.81.64.190
+#54.81.64.190
 #3.81.103.182
 #54.196.77.111
 
 [dbservers]
+54.224.185.186
