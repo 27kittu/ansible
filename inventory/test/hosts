@@ -22,5 +22,3 @@
 [tomcatServers]
 10.0.0.115 ansible_user=ubuntu
 #10.0.0.123 
-
-ii[tommyservers]
