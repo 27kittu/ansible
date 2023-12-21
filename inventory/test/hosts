@@ -20,5 +20,8 @@
 #10.0.0.7
 
 [tomcatServers]
-10.0.0.115 ansible_user=ubuntu
+#10.0.0.115 ansible_user=ubuntu
 #10.0.0.123 
+
+[sonarservers]
+35.171.24.200 ansible_user=ubuntu
