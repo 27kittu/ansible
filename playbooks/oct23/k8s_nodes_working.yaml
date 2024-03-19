@@ -1,4 +1,4 @@
-- hosts: webservers
+- hosts: k8s
   become: true
   gather_facts: false
   tasks:
@@ -13,6 +13,8 @@
           - curl 
           - gnupg 
           - lsb-release
+          - vim 
+          - git
         state: latest
     - name: Create a directory for keyrings to add repo for containerd
       file:
@@ -67,8 +69,8 @@
         state: latest
     - name: Adding the Google Cloud public signing key of k8s repo and Adding the k8s repo
       shell: |
-        curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-archive-keyring.gpg
-        echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+        curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+        echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
     - name: Update apt package index, install kubelet, kubeadm and kubectl, and pin their version
       apt: 
         update_cache: true

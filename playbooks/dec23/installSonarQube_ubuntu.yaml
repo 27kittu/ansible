@@ -4,7 +4,7 @@
   tasks: 
     - name: Install Java Runtime environment
       apt:
-        updata_cache: true
+        update_cache: true
         name: openjdk-11-jre-headless
     - name: Download SonarQube software
       get_url:
