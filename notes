@@ -1,0 +1,12 @@
+Templating:
+------------
+- we can use 'undefined' variables in case of substitution in to a placeholder or we can throw a default value
+
+{{ some_value | default(5) }}
+
+in the above, we can give a value to 'some_value' or we can substittute '5' if  the value is not given from 'some_value' and raises no error
+
+- if using 'roles', we can use, 'default/main.yml' file to pass
+defaults
+
+
