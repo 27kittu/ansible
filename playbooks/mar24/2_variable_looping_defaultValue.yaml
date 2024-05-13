@@ -1,0 +1,14 @@
+- hosts: all
+  gather_facts: false
+  become: true
+  tasks: 
+    - name: know the working of default variable
+      command:
+        cmd: "{{ item.key=item.value }}"
+      loop:
+        - key: VALUE1
+          value: hello
+        - key: VALUE2
+          value: This is my computer
+        - key: VALUE3
+          value: This is a diff computer

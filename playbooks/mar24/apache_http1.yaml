@@ -1,0 +1,21 @@
+- hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+    - name: install apache http server
+      apt:
+        update_cache: false
+        name: apache2
+    - name: create a page for apache server
+      copy:
+        content: | 
+          <html>
+            <head>
+            <head>
+            <body>
+              <h1> Hello, world</h1>
+              <h2> 
+            </body>
+          </html>
+        dest: /var/www/html/index.html
+

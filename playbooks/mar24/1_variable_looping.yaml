@@ -1,0 +1,14 @@
+- hosts: all
+  gather_facts: false
+  become: true
+  roles:
+    - upgrade
+  tasks:
+    - name: install few packages
+      apt:
+        name: "{{ item }}"
+        state: latest
+      loop:
+        - lynx
+        - python3-pip
+        - virtualenv       

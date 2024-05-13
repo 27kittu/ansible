@@ -1,0 +1,14 @@
+- hosts: all
+  gather_facts: false
+  become: true
+  vars_files: 
+    - variables.yaml
+  tasks:
+    - name: install containerisation package
+      apt: 
+        name: "{{ container }}"
+        update_cache: true
+    - name: Install configuration package
+      apt:
+        name: "{{ configuration }}"
+        

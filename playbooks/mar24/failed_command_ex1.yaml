@@ -1,0 +1,17 @@
+- hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: install some packge which isn't exists
+      apt: 
+        update_cache: false
+        name: httpd
+        state: latest
+      ignore_errors: true
+    - name: create a file with content
+      copy:
+        dest: /home/ansible/file1
+        content: | 
+          this is a sample file for showing
+          this file has no errors
+

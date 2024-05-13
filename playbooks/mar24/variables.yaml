@@ -1,0 +1,4 @@
+container: docker.io
+configuration: ansible-core
+
+

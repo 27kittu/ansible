@@ -1,0 +1,10 @@
+- hosts: debian
+  gather_facts: false
+  become: true
+  tasks:
+    - name: checking 'failed_when' conditional
+      apt: 
+        update_cache: false
+        name: httpd
+      register: res
+      failed_when: '"E: Package " in res.stderr'
