@@ -31,6 +31,8 @@ activate-global-python-argcomplete --user
 - now source the file
 source /root/.bash_completion (or) source /root/.zshenv
 
+and now, type 'reset'
+
 PER COMMAND COMPLETION:
 ---------------------
 eval $(register-python-argcomplete ansible)
@@ -46,4 +48,4 @@ eval $(register-python-argcomplete ansible-vault)
 
 - Now configure 'ansible' for use
 
-
+ansible-config init --disabled > ansible.cfg
