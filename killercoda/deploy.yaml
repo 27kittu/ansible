@@ -1,0 +1,13 @@
+- hosts: all
+  name: starting deployer playbook
+  gather_facts: false
+  become: true
+  tasks: 
+    - name: copy deploy.tar.gz over at {{ ansible_date_time.iso860_basic_short }}
+      copy: 
+        src: /root/deploy.tar.gz
+        dest: /opt
+        #remote_src: true
+        checksum: c6cd21b75a4b300b9228498c78afc6e7a831839e
+  
+
