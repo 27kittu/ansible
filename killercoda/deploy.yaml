@@ -1,13 +1,27 @@
-- hosts: all
-  name: starting deployer playbook
+- hosts: all 
   gather_facts: false
   become: true
-  tasks: 
-    - name: copy deploy.tar.gz over at {{ ansible_date_time.iso860_basic_short }}
+  tasks:
+    - name: moving the file to remote hosts
       copy: 
         src: /root/deploy.tar.gz
-        dest: /opt
-        #remote_src: true
-        checksum: c6cd21b75a4b300b9228498c78afc6e7a831839e
-  
-
+        dest: /opt/deploy.tar.gz
+    - name: creating a new dir in remote server
+      file: 
+        state: directory
+        mode: '0755'
+        path: /opt/app
+    - name: unpack the tar file
+      unarchive:
+        src: /opt/deploy.tar.gz
+        dest: /opt/app
+    - name: make the script executable
+      file: 
+        path: /opt/app/deploy/deployer.sh
+        mode: '0755'
+    - name: run the application
+      shell: /opt/app/deploy/deployer.sh
+      register: installer_output
+    - name: debug and show the variable installer_output
+      debug:  
+        var: installer_output
