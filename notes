@@ -1,3 +1,17 @@
+Ansible:
+------------
+- Ansible is an open source automation and host configuration tool made of python
+- Ansible uses a Control node using various connection methods(ssh etc,.) with the help of a file called 'hosts' to configure Managed nodes
+- 'hosts' file has all managed data for authenticating managed nodes to configure them
+- we can also have our own 'hosts' file
+
+Ansible Playbook objects:
+-------------------------
+- 
+
+
+
+
 Templating:
 ------------
 - we can use 'undefined' variables in case of substitution in to a placeholder or we can throw a default value
@@ -8,5 +22,3 @@ in the above, we can give a value to 'some_value' or we can substittute '5' if  
 
 - if using 'roles', we can use, 'default/main.yml' file to pass
 defaults
-
-
