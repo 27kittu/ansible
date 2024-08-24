@@ -8,4 +8,9 @@ ansible-playbook	:	Operate ansible-playbook
 ansible-pull		:	Pull playbooks from a remote repo and play on tartget hosts
 ansible-vault		: 	Encryption/Decryption utility for ansible datafiles
 ------------------------------------------------------------------------------
+- To know TOTAL NUMBER OF HOSTS that are associated with any host file
+
+ansible-inventory all -i hosts --graph (or)
+ansible all -i hosts --list-hosts
+
 
