@@ -4,5 +4,5 @@
   tasks:
     - name: To create a template file tem.j2 and transfer some attribs to main file(main.html)
       template:
-        src: ./files/main.html
-        dest: /root/main2.html
+        src: ./files/main2.html
+        dest: /root/main.html
