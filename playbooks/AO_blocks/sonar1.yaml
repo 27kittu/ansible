@@ -1,0 +1,6 @@
+- hosts: cockpit
+  gather_facts: true
+  become: true
+  tasks: 
+    - name: Install Sonarqube and arrange the server to be already for deploy
+      block: 
