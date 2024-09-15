@@ -4,7 +4,7 @@
   tasks: 
     - name: Install Sonarqube and arrange the server to be already for deploy
       block: 
-        - name: First Installing the basic utilities like java, wget to run
+        - name: First Installing a few prerequisites
           apt:
             update_cache: true
             name: 
@@ -12,7 +12,7 @@
         - name: Now, get the package from the official website of the Sonarqube
           get_url: 
             url: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-10.6.0.92116.zip
-            dest: /opt
+            dest: /opt/
         - name: Create a group for managing sonarqube app
           group:
             name: sonar
@@ -32,8 +32,10 @@
         - name: Now, unarchive all the files
           unarchive: 
             src: /opt/sonarqube-10.6.0.9211.zip
-            path: /opt/
+            dest: /opt/
             remote_src: true
-        - name: move all files after unarchiving
+        - name: Move all the unarchived files to a different dir
           file:
-            
+            src: /opt/sonarqube-10.6.0.9211
+            dest: /opt/sonarqube
+            remote_src: true
