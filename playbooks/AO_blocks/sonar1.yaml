@@ -62,3 +62,18 @@
           service: 
             name: sonar.service
             state: restarted
+      rescue:
+        - name: Firstly, reset the permissions of the sonarqube dir
+          file:
+            path: /opt/sonarqube
+            mode: '0755'
+            owner: sonar
+            group: sonar
+            recurse: true
+            remote_src: true
+        - name: Now, remove all the files in the /tmp dir
+          command: rm -rf /tmp/*
+        - name: Run the sonar service again
+          service:
+            name: sonar.service
+            state: started
