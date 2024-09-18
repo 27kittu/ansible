@@ -24,14 +24,41 @@
             shell: /bin/bash
         - name: Now, unarchive all the files
           unarchive: 
-            src: /opt/sonarqube-10.6.0.9211.zip
+            src: /opt/sonarqube-10.6.0.92116.zip
             dest: /opt/
             remote_src: true
+        - name: Rename the directory
+          command: mv /opt/sonarqube-10.6.0.92116 /opt/sonarqube
         - name: Change the name, owner and permissions of the unarchived dir
           file:
-            src: sonarqube-10.6.0.9211
-            dest: sonarqube
+            path: /opt/sonarqube
             mode: '0755'
             owner: sonar
             group: sonar
+            recurse: true
             remote_src: true
+        - name: Now, run the sonarqube server
+          copy: 
+            dest: /etc/systemd/system/sonar.service
+            content: | 
+              [Unit]
+              Description=Sonarqube service
+              After=syslog.target network.target
+              
+              [Service]
+              Type=forking
+        
+              ExecStart=/opt/sonarqube/bin/linux-x86-64/sonar.sh start
+              ExecStop=/opt/sonarqube/bin/linux-x86-64/sonar.sh stop
+
+              User=root
+              Group=root
+              Restart=always
+
+              [Install]
+              WantedBy=multi-user.target
+        - name: Starting and Optimising the sonar service
+          become_user: sonar
+          service: 
+            name: sonar.service
+            state: restarted
