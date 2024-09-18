@@ -22,20 +22,16 @@
             create_home: true
             group: sonar
             shell: /bin/bash
-        - name: Create a new directory to save Sonarqube files
-          file:
-            path: /opt/sonarqube
-            state: directory
-            mode: '0755'
-            owner: sonar
-            group: sonar
         - name: Now, unarchive all the files
           unarchive: 
             src: /opt/sonarqube-10.6.0.9211.zip
             dest: /opt/
             remote_src: true
-        - name: Move all the unarchived files to a different dir
+        - name: Change the name, owner and permissions of the unarchived dir
           file:
-            src: /opt/sonarqube-10.6.0.9211
-            dest: /opt/sonarqube
+            src: sonarqube-10.6.0.9211
+            dest: sonarqube
+            mode: '0755'
+            owner: sonar
+            group: sonar
             remote_src: true
