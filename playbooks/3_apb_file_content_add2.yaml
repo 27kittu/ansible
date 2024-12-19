@@ -1,0 +1,11 @@
+- hosts: all 
+  become: true
+  gather_facts: false
+  tasks:
+  - name: creating files
+    copy:
+      content: | 
+        Hi, this is to create something with ansible
+        I want to create a file
+      dest: /home/ansible/file1
+

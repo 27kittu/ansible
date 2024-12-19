@@ -1,0 +1,11 @@
+hosts: debian
+become_user: false
+tasks:
+  - name: create a file
+    file:
+      path: /opt/file1
+      user: ansible
+      group: ansible
+      mode: 0700
+    register: outp
+    error_when: "'Permission denied' in outp.stderr"

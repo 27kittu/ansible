@@ -1,0 +1,78 @@
+- hosts: tomcatServers 
+  become: true
+  tasks:
+    - name: Install Java
+      apt:
+        name: openjdk-11-jre-headless
+        state: present
+    - name: add tomcatuser
+      user:
+        name: tomcat
+        shell: /sbin/nologin
+    - name: get_installer
+      get_url:
+        url: https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.96/bin/apache-tomcat-8.5.96.tar.gz
+        dest: /tmp/
+    - name: copy
+      copy:
+        src: /tmp/apache-tomcat-8.5.96.tar.gz
+        dest: /opt/
+        remote_src: yes
+    - name: install
+      unarchive:
+        src: /opt/apache-tomcat-8.5.96.tar.gz
+        dest: /opt/
+        remote_src: yes
+    - name: Change file ownership, group and permissions
+      file:
+        path: /opt/apache-tomcat-8.5.96
+        owner: tomcat
+        group: tomcat
+        recurse: yes
+        state: directory
+    - name: Change webapps/ permissions to remotely send packages
+      file:
+        path: /opt/apache-tomcat-8.5.96/webapps
+        mode: 0777
+        recurse: yes
+        state: directory
+    - name: make tomcat symbolic
+      file:
+        src: /opt/apache-tomcat-8.5.96
+        dest: /opt/tomcat8
+        owner: tomcat
+        group: tomcat
+        state: link
+    - name: make tomcat.service
+      file:
+        path: /etc/systemd/system/tomcat.service
+        state:  touch
+    - name: edit tomcat.service
+      blockinfile:
+        dest: /etc/systemd/system/tomcat.service
+        insertafter:
+        block: |
+          [Unit]
+          Description = Apache Tomcat 8
+          After = syslog.target network.target
+          [Service]
+          User = tomcat
+          Group = tomcat
+          Type = oneshot
+          PIDFile =/opt/apache-tomcat-8.5.96/tomcat.pid
+          RemainAfterExit = yes
+          ExecStart =/opt/apache-tomcat-8.5.96/bin/startup.sh
+          ExecStop =/opt/apache-tomcat-8.5.96/bin/shutdown.sh
+          ExecReStart =/opt/apache-tomcat-8.5.96/bin/shutdown.sh;/opt/apache-tomcat-8.5.96/bin/startup.sh
+          [Install]
+          WantedBy = multi-user.target
+    - name: chmod 755 tomcat.service
+      file:
+        path: /etc/systemd/system/tomcat.service
+        mode:  0755
+    - name: start tomcat
+      systemd:
+        name: tomcat.service
+        state: started
+        daemon_reload: yes
+        enabled: yes

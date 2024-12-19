@@ -1,0 +1,9 @@
+- hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+    - name: checking the conditional with no 'failed_when'
+      apt:
+        update_cache: false
+        name: httpd
+        state: latest

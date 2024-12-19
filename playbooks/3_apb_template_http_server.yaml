@@ -1,0 +1,35 @@
+- hosts: web_servers
+  become: true
+  tasks:
+    - name: Creating a file for use in http server
+      file: 
+        state: touch
+        mode: 0755
+        owner: ubuntu
+        group: ubuntu
+        path: /home/ubuntu/index.html
+    - name: writing index.html file
+      copy:
+        dest: /home/ubuntu/index.html
+        content: |
+          <html>
+            <body> 
+              <h1> Hi this is to see if the page is working or not</h1>
+              <h2> This is a normal page to see if the page is working</h2>
+              <h2> I had my lunch just now</h2>
+            </body>
+          </html>
+    - name: Installing 'apache2' 
+      apt: 
+        update_cache: true
+        name: apache2
+        state: latest
+    - name: Moving created file /home/ubuntu/index.html to /var/www/html/
+      src: /home/ubuntu/index.html
+      dest: /var/www/html/index.html
+      remote_src: yes
+    - name: Creating Service for the 'apache2' server
+      service:
+        name: apache2.service
+        state: restarted                    
+        enable: true

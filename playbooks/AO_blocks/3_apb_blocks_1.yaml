@@ -1,0 +1,36 @@
+- hosts: cockpit
+  gather_facts: true
+  become: true
+  tasks:
+    - name: Installing the Apache webserver
+      block:
+        - name: updating and installing apache server
+          apt:  
+            update_cache: true
+            name: 
+              - apache2
+              - memcached
+            state: present  
+        - name: copying a new file to the apache server webpage
+          copy:
+            dest: /var/www/html/index.html
+            content: | 
+              <html>
+                <body>
+                  <h1>Hi, World</h1>
+                  <h2>The os name is {{ ansible_nodename }}</h2>
+                </body>
+              </html>
+          notify: 
+            - restart apache
+        - name: creating a service for apache server
+          service:
+            name: apache2
+            state: started
+            enabled: true
+      when: ansible_facts['distribution']== 'ubuntu'
+  handlers:
+    - name: restart apache
+      service:
+        name: apache2
+        state: restarted

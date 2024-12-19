@@ -1,0 +1,57 @@
+- First, install all the resources in a new machine for ansible using virtual environment
+
+sudo apt update -y && sudo apt install python-is-python3 python3-virtualenv python3-pip -y
+
+
+
+Ansible installation using 'pip'
+================================
+
+- install python3 
+
+apt install python-is-python3 python3-pip python3-virtualenv python3-argcomplete -y
+
+- create a virtual environment using 'virtualenv'
+
+python3 -m virtualenv env1
+
+- switch into virtualenv using 
+
+source env1/bin/activate
+
+- Now install ansible for the current user for minimal version
+
+python -m pip install --user ansible-core 
+
+Now getting ansible ready for duty:
+--------------------
+- First, add the ansible shell completion to the commandline
+
+python -m pip install argcomplete
+
+- After installing the 'argcomplete', configure the 'argcomplete' 
+GLOBAL COMPLETION:
+-----------------
+activate-global-python-argcomplete --user 
+
+- now source the file
+source /root/.bash_completion (or) source /root/.zshenv
+
+and now, type 'reset'
+
+PER COMMAND COMPLETION:
+---------------------
+eval $(register-python-argcomplete ansible)
+eval $(register-python-argcomplete ansible-config)
+eval $(register-python-argcomplete ansible-console)
+eval $(register-python-argcomplete ansible-doc)
+eval $(register-python-argcomplete ansible-galaxy)
+eval $(register-python-argcomplete ansible-inventory)
+eval $(register-python-argcomplete ansible-playbook)
+eval $(register-python-argcomplete ansible-pull)
+eval $(register-python-argcomplete ansible-vault)
+--------------------------------
+
+- Now configure 'ansible' for use
+
+ansible-config init --disabled > ansible.cfg

@@ -1,0 +1,5 @@
+- hosts: nexusservers
+  become: true
+  gather_facts: false
+  roles:
+    - ../../roles/update_hosts

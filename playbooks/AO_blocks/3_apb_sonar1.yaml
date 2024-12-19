@@ -1,0 +1,64 @@
+- hosts: cockpit
+  gather_facts: true
+  become: true
+  tasks: 
+    - name: Install Sonarqube and arrange the server to be already for deploy
+      block: 
+        - name: First Installing a few prerequisites
+          apt:
+            update_cache: true
+            name: 
+              - default-jre
+        - name: Now, get the package from the official website of the Sonarqube
+          get_url: 
+            url: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-10.6.0.92116.zip
+            dest: /opt/
+        - name: Create a group for managing sonarqube app
+          group:
+            name: sonar
+        - name: Create a user for sonarqube inorder to manage Sonarqube application
+          user: 
+            name: sonar
+            create_home: true
+            group: sonar
+            shell: /bin/bash
+        - name: Now, unarchive all the files
+          unarchive: 
+            src: /opt/sonarqube-10.6.0.92116.zip
+            dest: /opt/
+            remote_src: true
+        - name: Rename the directory
+          command: mv /opt/sonarqube-10.6.0.92116 /opt/sonarqube
+        - name: Change the name, owner and permissions of the unarchived dir
+          file:
+            path: /opt/sonarqube
+            mode: '0755'
+            owner: sonar
+            group: sonar
+            recurse: true
+            remote_src: true
+        - name: Now, run the sonarqube server
+          copy: 
+            dest: /etc/systemd/system/sonar.service
+            content: | 
+              [Unit]
+              Description=Sonarqube service
+              After=syslog.target network.target
+              
+              [Service]
+              Type=forking
+        
+              ExecStart=/opt/sonarqube/bin/linux-x86-64/sonar.sh start
+              ExecStop=/opt/sonarqube/bin/linux-x86-64/sonar.sh stop
+
+              User=root
+              Group=root
+              Restart=always
+
+              [Install]
+              WantedBy=multi-user.target
+        - name: Starting and Optimising the sonar service
+          become_user: sonar
+          service: 
+            name: sonar.service
+            state: restarted

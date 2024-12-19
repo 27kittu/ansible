@@ -1,0 +1,94 @@
+- hosts: sonarservers:nexusservers
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Installing different Java versions
+      apt:
+        name: "{{ java_version }}"
+        state: latest
+ 
+- name: Download, configure and install Nexus
+  hosts: nexusservers
+  become: true
+  tasks:
+    - name: Create nexus group
+      group:
+        name: nexus
+    - name: Create nexus user
+      user:
+        name: nexus
+        group: nexus
+    - name: Download nexus server package from off. site
+      get_url:
+        url: https://download.sonatype.com/nexus/3/nexus-3.61.0-02-unix.tar.gz
+        dest: /opt
+    - name: unzip the nexus tar file  
+      unarchive:
+        src: /opt/nexus-3.61.0-02-unix.tar.gz
+        dest: /opt/
+        remote_src: true
+        mode: '0777'
+    - name: Populating extracted files to 'nexus directory'
+      file: 
+        path: /opt/nexus 
+        state: directory
+        mode: '0755'
+        owner: nexus
+        group: nexus
+        recurse: true
+    - name: Moving files to /opt/nexus dir, modifying few files and add nexus to /etc/sudoers
+      shell:  |
+        mv /opt/nexus-3.61.0-02 /opt/sonatype-work /opt/nexus
+        chown -R nexus:nexus /opt/nexus
+
+        cat > /opt/nexus/nexus-3.61.0-02/bin/nexus.rc<<eof
+        run_as_user="nexus"
+        eof
+
+        sed -i 's/^root.*ALL$/root    ALL=(ALL:ALL) ALL\nnexus ALL=(ALL)     NOPASSWD: ALL/' /etc/sudoers
+    #- name: starting nexus
+      #become: true
+      #become_user: nexus
+      #shell: | 
+        #sh /opt/nexus/nexus-3.61.0-02/bin/nexus start
+
+- name: Download, configure and install Sonarqube
+  hosts: sonarservers
+  become: true
+  tasks:
+    - name: Create sonar group
+      group:
+        name: sonar
+    - name: Create sonar user
+      user:
+        name: sonar
+        group: sonar
+    - name: Download sonar server package from off. site
+      get_url:
+        url: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-10.2.1.78527.zip
+        dest: /opt/
+    - name: unzip the sonar zip file  
+      unarchive:
+        src: /opt/sonarqube-10.2.1.78527.zip
+        dest: /opt/
+        remote_src: true
+        mode: '0777'
+    - name: Populating extracted files to 'sonar directory'
+      file: 
+        path: /opt/sonar 
+        state: directory
+        mode: '0755'
+        owner: sonar
+        group: sonar
+        recurse: true
+    - name: Moving files to /opt/sonar dir, modifying few files and add sonar to /etc/sudoers
+      shell:  |
+        mv /opt/sonarqube-10.2.1.78527 /opt/sonar
+        chown -R sonar:sonar /opt/sonar
+
+        sed -i 's/^root.*ALL$/root    ALL=(ALL:ALL) ALL\nsonar ALL=(ALL)     NOPASSWD: ALL/' /etc/sudoers
+    - name: starting sonar
+      become: true
+      become_user: sonar
+      shell: | 
+        sh /opt/sonar/sonarqube-10.2.1.78527/bin/linux-x86-64/sonar.sh start

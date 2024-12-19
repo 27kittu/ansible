@@ -1,0 +1,16 @@
+ansible			:	Main command to invoke ansible
+ansible-config		:	initialize or deal with ansible configuration
+ansible-console		:	Run commands on all the hosts at-a-time
+ansible-doc		:	Documentation for all ansible commands
+ansible-galaxy		:	Initialize and use ansible roles and other features
+ansible-inventory	:	Manage all types of hosts even dynamic inventory
+ansible-playbook	:	Operate ansible-playbook
+ansible-pull		:	Pull playbooks from a remote repo and play on tartget hosts
+ansible-vault		: 	Encryption/Decryption utility for ansible datafiles
+------------------------------------------------------------------------------
+- To know TOTAL NUMBER OF HOSTS that are associated with any host file
+
+ansible-inventory all -i hosts --graph (or)
+ansible all -i hosts --list-hosts
+
+

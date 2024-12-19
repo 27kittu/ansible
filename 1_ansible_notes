@@ -1,0 +1,43 @@
+Ansible:
+------------
+- Ansible is an open source automation and host configuration tool made of python
+- Ansible uses a Control node using various connection methods(ssh etc,.) with the help of a file called 'hosts' to configure Managed nodes
+- 'hosts' file has all managed data for authenticating managed nodes to configure them
+- we can also have our own 'hosts' file
+
+- Ansible can configure hosts using 
+  ad-hoc commands on commandline
+  ansible-playbook
+
+Ansible Playbooks:
+------------------
+- Ansible playbooks act from 'Controlled nodes' on 'Managed nodes'
+- Ansible playbook is a yaml file full of multiple sequential tasks that can be executed simultaneously on any number of hosts based on requirement
+- playbook: is a list of plays with ordered list of tasks from top to bottom to achieve overall goal
+- play: An ordered list of tasks that map to particular set of managed nodes in an inventory
+- task: is a single part of a play. A play contains many such tasks to attain a goal in specified set of managed hosts.
+- module: is part of a standard library that can be used to attain tasks in a play.
+- roles: are invoked whenever there are tasks that are to be executed commonly for all hosts
+- handlers: are siblings of tasks that are invoked or executed to revoke a previously executed task using a 'changed' attribute set on that task.
+
+- Invoking ansible playbooks:
+
+ansible-playbook -i /etc/ansible/hosts <playbook_name>
+
+- To check the playbook free of any errors
+
+ansible-playbook -i /etc/ansible/hosts --check <playbook_name>
+
+
+
+
+Templating:
+------------
+- we can use 'undefined' variables in case of substitution in to a placeholder or we can throw a default value
+
+{{ some_value | default(5) }}
+
+in the above, we can give a value to 'some_value' or we can substittute '5' if  the value is not given from 'some_value' and raises no error
+
+- if using 'roles', we can use, 'default/main.yml' file to pass
+defaults

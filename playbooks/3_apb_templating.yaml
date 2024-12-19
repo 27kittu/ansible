@@ -1,0 +1,8 @@
+- hosts: cockpit
+  gather_facts: true
+  become: true #become_user
+  tasks:
+    - name: To create a template file tem.j2 and transfer some attribs to main file(main.html)
+      template:
+        src: ./files/main.html
+        dest: /root/main.html

@@ -1,0 +1,16 @@
+- hosts: debian
+  become: true
+  gather_facts: false
+  tasks:
+    - name: install python2
+      apt: 
+        name: "{{ python_version }}"
+        update_cache: true
+- hosts: localhost
+  become: true
+  gather_facts: false
+  tasks:
+    - name: install python3
+      apt: 
+        name: "{{ python_version }}"
+        update_cache: false

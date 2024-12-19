@@ -1,0 +1,26 @@
+- hosts: nexusservers
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Download package from apt
+      apt:
+        update_cache: true
+        name: 
+          - python-is-python3
+          - python3-pip
+          - virtualenv
+          - curl
+        state: latest 
+    - name: Download repo from the github
+      git: 
+        repo: git@github.com:27kittu/everest.git
+        dest: /home/ansible/
+        clone: true
+        #accept_hostkey: yes
+        key_file: /home/ansible/.ssh/id_rsa
+    - name: moving the ramco4 dir to $Home/
+      copy:
+        remote_src: true
+        src: /home/ansible/everest/ramcov4
+        dest: /home/ansible/
+    - name: 

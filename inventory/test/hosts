@@ -1,0 +1,78 @@
+[debian]
+192.168.173.6 ansible_user=ansible ansible_password=ubuntu0027
+#192.168.174.62 ansible_port=8022 ansible_user=u0_a386 ansible_password=ubuntu0027
+#192.168.174.177 ansible_user=garuda ansible_password=ubuntu0027
+#54.159.188.160 ansible_user=ansible ansible_ssh_private_key_file=~/Desktop/handy/everest/aws/10/success.pem #ansible_password=ubuntu@user
+
+[nexusservers]
+#54.159.112.130 ansible_user=ubuntu ansible_ssh_private_key_file=/home/ansible/ansible/explorer.pem
+#54.174.190.186
+
+[sonarservers]
+#54.224.184.182
+#100.24.13.113
+#44.204.105.47 ansible_user=ubuntu ansible_ssh_private_key_file=~/Desktop/handy/everest/aws/4/redkey.pem
+
+[appservers]
+#172.31.18.146
+
+[webservers]
+#54.81.64.190
+#3.81.103.182
+#54.196.77.111
+
+[dbservers]
+#54.224.185.186
+#10.0.0.14
+#10.0.0.7
+
+[tomcatServers]
+#10.0.0.115 ansible_user=ubuntu
+#10.0.0.123 
+
+[k8s]
+#44.199.190.64 ansible_user=ubuntu ansible_ssh_private_key_file=~/Desktop/handy/everest/aws/4/redkey.pem
+#3.239.64.69 ansible_user=ubuntu ansible_ssh_private_key_file=~/Desktop/handy/everest/aws/4/redkey.pem
+#35.170.60.123 ansible_user=ubuntu ansible_ssh_private_key_file=~/Desktop/handy/everest/aws/4/redkey.pem
+
+[sonarservers]
+#35.171.24.200 ansible_user=ubuntu
+[debian]
+#192.168.66.1 ansible_user=ansible ansible_password=ubuntu@user
+#192.168.174.62 ansible_port=8022 ansible_user=u0_a386 ansible_password=ubuntu0027
+#192.168.174.177 ansible_user=garuda ansible_password=ubuntu0027
+#54.159.188.160 ansible_user=ansible ansible_ssh_private_key_file=~/Desktop/handy/everest/aws/10/success.pem #ansible_password=ubuntu@user
+
+[nexusservers]
+#54.159.112.130 ansible_user=ubuntu ansible_ssh_private_key_file=/home/ansible/ansible/explorer.pem
+#54.174.190.186
+
+[sonarservers]
+#54.224.184.182
+#100.24.13.113
+#44.204.105.47 ansible_user=ubuntu ansible_ssh_private_key_file=~/Desktop/handy/everest/aws/4/redkey.pem
+
+[appservers]
+#172.31.18.146
+
+[webservers]
+#54.81.64.190
+#3.81.103.182
+#54.196.77.111
+
+[dbservers]
+#54.224.185.186
+#10.0.0.14
+#10.0.0.7
+
+[tomcatServers]
+#10.0.0.115 ansible_user=ubuntu
+#10.0.0.123 
+
+[k8s]
+#44.199.190.64 ansible_user=ubuntu ansible_ssh_private_key_file=~/Desktop/handy/everest/aws/4/redkey.pem
+#3.239.64.69 ansible_user=ubuntu ansible_ssh_private_key_file=~/Desktop/handy/everest/aws/4/redkey.pem
+#35.170.60.123 ansible_user=ubuntu ansible_ssh_private_key_file=~/Desktop/handy/everest/aws/4/redkey.pem
+
+[sonarservers]
+#35.171.24.200 ansible_user=ubuntu

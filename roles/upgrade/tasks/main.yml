@@ -1,0 +1,6 @@
+---
+# tasks file for upgrade
+- name: updating and upgrading the hosting
+  apt: 
+    update_cache: true
+    upgrade : yes
