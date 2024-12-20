@@ -1,0 +1,79 @@
+- name: Download, configure and install Nexus
+  hosts: nexusservers
+  become: true
+  tasks:
+    - name: Installing different Java versions
+      apt:
+        name: "{{ java_version }}"
+        state: latest
+
+    - name: Configuring the nexus user
+      block: 
+        - name: Create nexus group
+          group:
+            name: nexus
+        - name: Create nexus user
+          user:
+            name: nexus
+            group: nexus
+
+    - name: Download Nexus server from official site and rename
+      block:
+        - name: Download nexus server package from off. site
+          get_url:
+            url: https://download.sonatype.com/nexus/3/nexus-3.61.0-02-unix.tar.gz
+            dest: /opt
+        - name: unzip the nexus tar file  
+          unarchive:
+            src: /opt/nexus-3.61.0-02-unix.tar.gz
+            dest: /opt/
+            remote_src: true
+            mode: '0777'
+        - name: Creating a new 'nexus directory'
+          file: 
+            path: /opt/nexus 
+            state: directory
+            mode: '0755'
+            owner: nexus
+            group: nexus
+            recurse: true
+        - name: Moving files to /opt/nexus dir, modify /etc/sudoers
+          shell:  |
+            mv /opt/nexus-3.61.0-02 /opt/sonatype-work /opt/nexus
+            chown -R nexus:nexus /opt/nexus
+
+            cat > /opt/nexus/nexus-3.61.0-02/bin/nexus.rc<<eof
+            run_as_user="nexus"
+            eof
+
+            sed -i 's/^root.*ALL$/root    ALL=(ALL:ALL) ALL\nnexus ALL=(ALL)     NOPASSWD: ALL/' /etc/sudoers
+      
+    - name: Now, starting the nexus server
+      block:
+        - name: creating a service for nexus 
+          copy: 
+            dest: /etc/systemd/system/nexus.service
+            content: |
+              [Unit]
+              Description=Nexus service
+              After=syslog.target network.target
+
+              [Service]
+              Type=forking
+
+              ExecStart=/opt/nexus/nexus-3.61.0-02/bin/nexus start
+              ExecStop=/opt/nexus/nexus-3.61.0-02/bin/nexus stop
+
+              User=nexus
+              Group=nexus
+              Restart=always
+
+              [Install]
+              WantedBy=multi-user.target 
+        - name: start nexus
+          become_user: nexus
+          service:
+            name: nexus.service
+            state: started
+            enabled: True
+      
