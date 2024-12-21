@@ -6,4 +6,3 @@
       apt:
         name: "{{ java_version }}"
         state: latest
- 

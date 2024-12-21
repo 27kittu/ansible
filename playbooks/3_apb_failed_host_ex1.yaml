@@ -1,7 +1,0 @@
-- hosts: all:nexus_servers
-  gather_facts: false
-  become: true
-  tasks:
-    - name: executing a command
-      command: cat /etc/motd 2>&1
-      #ignore_unreachable: true

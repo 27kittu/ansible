@@ -1,0 +1,11 @@
+- hosts: all
+  become: true 
+  gather_facts: true
+  tasks: 
+    - name: create a symbolic link
+      file: 
+        path: /opt/file
+        owner: ansible
+        group: ansible
+        state: link
+        src:  /home/ansible/Downloads/virtual/pyvenv.cfg

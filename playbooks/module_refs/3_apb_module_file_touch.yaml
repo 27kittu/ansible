@@ -1,0 +1,12 @@
+- hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: create a empty file using touch 
+      file: 
+        path: /opt/file1
+        mode: '0700'
+        owner: ansible
+        group: ansible
+        state: touch
+        #recurse: true #"recurse option requires state to be 'directory'

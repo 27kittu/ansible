@@ -1,0 +1,21 @@
+- hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: create a file
+      copy: 
+        content: |
+          #!/usr/bin/bash
+          echo "$HOME"
+          echo "$LC_ALL"
+        dest: /opt/file1
+        owner: ansible
+        group: ansible
+        mode: '0700'
+    - name: executing the above file using 'ansible'
+      become_user: ansible
+      command: 'bash /opt/file1'
+      register: out
+    - name: show msg
+      debug:
+        msg: "{{ out.stdout }}"

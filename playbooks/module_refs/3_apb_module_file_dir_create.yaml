@@ -1,0 +1,12 @@
+- hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: create a directory 
+      file: 
+        path: /opt/nexus/bin/
+        mode: '0700'
+        owner: ansible
+        group: ansible
+        state: directory
+        recurse: true

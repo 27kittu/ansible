@@ -1,0 +1,9 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: Writing the content to the file
+      copy:
+        content: | 
+          Hi, this is text writing to a file.
+          using ansible 'copy' module
+        dest: /opt/file3

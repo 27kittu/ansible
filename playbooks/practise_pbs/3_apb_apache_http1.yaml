@@ -10,12 +10,9 @@
       copy:
         content: | 
           <html>
-            <head>
-            <head>
             <body>
               <h1> Hello, world</h1>
               <h2> 
             </body>
           </html>
         dest: /var/www/html/index.html
-
