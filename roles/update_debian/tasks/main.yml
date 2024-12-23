@@ -1,0 +1,11 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for update_debian
+- name: adding ansible repo
+  apt_repository:
+    repo: ppa://ansible/ansible
+    state: present
+- name: updating all the hosts
+  apt:
+    name: ansible-core 
+    update_cache: true

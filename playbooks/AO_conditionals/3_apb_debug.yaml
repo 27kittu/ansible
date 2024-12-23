@@ -1,0 +1,7 @@
+- hosts: all 
+  become: true
+  gather_facts: true
+  tasks:
+    - name: get the facts 
+      debug:
+        var: ansible_distribution

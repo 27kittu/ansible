@@ -1,0 +1,18 @@
+- hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: check OS family
+      debug:
+        var: ansible_facts['os_family']
+    
+    - name: condition
+      command: 'uname -r'
+      register: out
+
+    - name: ld
+      copy:
+        content: | 
+          this is conditional creating
+        dest: /opt/file2
+      when: out.stdout=='6.1.0-28-amd64'

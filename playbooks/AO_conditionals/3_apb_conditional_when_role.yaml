@@ -1,0 +1,5 @@
+- hosts: all
+  become: true
+  roles: 
+    - role: update_debian
+      when: ansible_facts['os_family']== 'Debian' 
