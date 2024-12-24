@@ -1,4 +1,4 @@
-- hosts: cockpit
+- hosts: sonarservers
   gather_facts: true
   become: true
   tasks: 
@@ -72,9 +72,12 @@
 
               [Install]
               WantedBy=multi-user.target
+        
+        - name: starting manually
+          command: /opt/sonarqube/bin/linux-x86-64/sonar.sh start
+          become_user: sonar
 
         - name: Starting the sonar service
-          become_user: sonar
           service: 
             name: sonar.service
             state: restarted

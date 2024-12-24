@@ -1,0 +1,6 @@
+- hosts: localhost
+  become: true
+  gather_facts: true
+  tasks:
+    - name: install lsb-release
+      apt: name=lsb-release state=latest
