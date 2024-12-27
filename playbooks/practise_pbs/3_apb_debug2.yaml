@@ -1,0 +1,11 @@
+- hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: check OS family
+      debug:
+        #var: result # var is to get something if variable exists and print
+        #var: ansible_facts['ansible_selinux'].status=='enabled'
+        #msg:   #is to print the custom message while running playbook
+        var: ansible_facts['os_family']
+        verbosity: 0 # default option

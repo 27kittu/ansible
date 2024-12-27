@@ -1,0 +1,19 @@
+- hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: Install java 
+      apt: 
+        update_cache: true
+        name: "{{ java_version }}"
+ 
+    - import_tasks: ./3_atasks_createN_conf_user.yaml
+      vars: 
+        import_from_vars: 
+          - ./sonar.yaml
+          - ./nexus.yaml
+    - import_tasks: ./3_atasks_get_pkg_conf.yaml
+      vars: 
+        import_from_vars: 
+          - ./sonar.yaml
+          - ./nexus.yaml

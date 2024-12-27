@@ -50,7 +50,7 @@ rpm_key
 script
 service
 service_facts
-set_fact
+set_fact: set values to 'random variables' to use inside the playbook
 set_stats
 setup
 shell

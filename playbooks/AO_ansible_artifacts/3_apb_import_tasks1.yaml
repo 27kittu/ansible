@@ -1,0 +1,5 @@
+- hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - import_tasks: 3_atasks_file1.yaml 

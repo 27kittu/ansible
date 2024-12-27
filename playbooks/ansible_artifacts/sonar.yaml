@@ -1,0 +1,6 @@
+java_version: default-jdk
+user: sonar
+repo_url: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-10.6.0.92116.zip
+home_dir: /opt/sonarqube
+pkg_name: /opt/sonarqube-10.6.0.92116.zip
+exec_path: /opt/sonarqube/bin/linux-x86-64/sonar.sh start

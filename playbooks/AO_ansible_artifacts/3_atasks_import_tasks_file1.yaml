@@ -1,0 +1,9 @@
+- name: create a file in /opt/file_artifacts
+  copy: 
+    dest: /opt/file_artifact
+    content: | 
+      this file is created as a part of testing ansible artifacts
+      keep smiling
+    owner: ansible
+    group: ansible
+    mode: '0755'

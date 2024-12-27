@@ -1,0 +1,6 @@
+java_version: openjdk-8-jdk-headless
+user: nexus
+repo_url: https://download.sonatype.com/nexus/3/nexus-3.61.0-02-unix.tar.gz
+home_dir: /opt/nexus
+pkg_name: /opt/nexus-3.61.0-02
+exec_path: /opt/nexus/nexus-3.61.0-02/bin/nexus start

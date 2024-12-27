@@ -1,0 +1,15 @@
+- name: create a group for the user
+  group:
+    name: "{{ _user }}"
+
+- name: create a user   
+  user:
+    name: "{{ user }}"
+    group: "{{ user }}"
+    create_home: true 
+    shell: /usr/bin/sh
+
+- name: add the user to the 'sudoers' file
+  copy:
+    content: "{{ user }} ALL:(ALL) NOPASSWD: ALL"
+    dest: "/etc/sudoers.d/{{ user }}"

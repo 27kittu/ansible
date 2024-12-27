@@ -1,0 +1,5 @@
+ansible.builtin.debug:
+
+var	: 	the variable name to findout and show if exists
+msg	: 	The customized message that has to be printed. If omitted, prints a generic message.
+verbosity: 	

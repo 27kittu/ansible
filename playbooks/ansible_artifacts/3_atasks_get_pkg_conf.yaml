@@ -1,0 +1,26 @@
+- name: get the package from off. repo
+  get_url: 
+    url: "{{ url }}"
+    dest: /opt
+  
+- name: create a home directory
+  file:
+    path: "{{ home_dir }}"
+    mode: '0755'
+    owner: "{{ sonar_user }}"
+    group: "{{ sonar_user }}"
+    recurse: true
+    remote_src: true
+
+- name: unarchive the package
+  unarchive:
+    src: "{{ pkg_name }}"
+    dest: "{{ home_dir }}" 
+    remote_src: true
+
+- name: reapply permissions
+  file:
+    path: "{{ home_dir }}"
+    owner: " {{ user }}"
+    group: " {{ user }}"
+    mode: '0755'

@@ -1,0 +1,4 @@
+ansible.builtin.set_fact
+
+this module can be used to 
+- set values to any random variable and use inside the ansible-playbook like k=2 and we can use inside the pb

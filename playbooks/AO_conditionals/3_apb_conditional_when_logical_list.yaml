@@ -1,0 +1,12 @@
+- hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: install a packge based on the distribution
+      apt: 
+        update_cache: true
+        name: mc 
+        state: latest
+      when:  # here all the conditions are checked and if any of the condition met, it runs(we can include errors)
+        - ansible_distribution=='Debian' and ansible_pkg_mgr=='apt'
+        - ansible_distribution=='CentOS' and ansible_pkg_mgr=='yum'
