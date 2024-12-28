@@ -8,7 +8,7 @@
           apt:
             update_cache: true
             name: 
-              - default-jre
+              - openjdk-17-jdk
 
         - name: Now, get the package from the official website of the Sonarqube
           get_url: 
@@ -28,7 +28,7 @@
 
         - name: Setup sudo access for the 'sonar' user
           copy:
-            content: 'sonar ALL:(ALL)     NOPASSWD:ALL'
+            content: 'sonar ALL=(ALL)     NOPASSWD:ALL'
             dest: /etc/sudoers.d/sonar
             validate: /usr/sbin/visudo -cf %s
 
@@ -73,10 +73,6 @@
               [Install]
               WantedBy=multi-user.target
         
-        - name: starting manually
-          command: /opt/sonarqube/bin/linux-x86-64/sonar.sh start
-          become_user: sonar
-
         - name: Starting the sonar service
           service: 
             name: sonar.service
