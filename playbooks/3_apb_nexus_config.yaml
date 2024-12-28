@@ -4,31 +4,39 @@
   tasks:
     - name: Installing different Java versions
       apt:
-        name: "{{ java_version }}"
+        update_cache: true
+        name: openjdk-8-jre
         state: latest
 
-    - name: Configuring the nexus user
+    - name: Configuring the nexus user and downloading the repo from official source
       block: 
         - name: Create nexus group
           group:
             name: nexus
+
         - name: Create nexus user
           user:
             name: nexus
             group: nexus
+    
+        - name: Setup sudo access for the 'nexus' user
+          copy:
+            content: 'nexus ALL=(ALL)     NOPASSWD:ALL'
+            dest: /etc/sudoers.d/nexus
+            validate: /usr/sbin/visudo -cf %s
 
-    - name: Download Nexus server from official site and rename
-      block:
         - name: Download nexus server package from off. site
           get_url:
             url: https://download.sonatype.com/nexus/3/nexus-3.61.0-02-unix.tar.gz
             dest: /opt
+
         - name: unzip the nexus tar file  
           unarchive:
             src: /opt/nexus-3.61.0-02-unix.tar.gz
             dest: /opt/
             remote_src: true
-            mode: '0777'
+            mode: '0755'
+
         - name: Creating a new 'nexus directory'
           file: 
             path: /opt/nexus 
@@ -37,6 +45,7 @@
             owner: nexus
             group: nexus
             recurse: true
+
         - name: Moving files to /opt/nexus dir, modify /etc/sudoers
           shell:  |
             mv /opt/nexus-3.61.0-02 /opt/sonatype-work /opt/nexus
@@ -46,7 +55,6 @@
             run_as_user="nexus"
             eof
 
-            sed -i 's/^root.*ALL$/root    ALL=(ALL:ALL) ALL\nnexus ALL=(ALL)     NOPASSWD: ALL/' /etc/sudoers
       
     - name: Now, starting the nexus server
       block:
@@ -64,16 +72,16 @@
               ExecStart=/opt/nexus/nexus-3.61.0-02/bin/nexus start
               ExecStop=/opt/nexus/nexus-3.61.0-02/bin/nexus stop
 
-              User=nexus
-              Group=nexus
+              User=root
+              Group=root
               Restart=always
 
               [Install]
               WantedBy=multi-user.target 
+
         - name: start nexus
           become_user: nexus
           service:
             name: nexus.service
             state: started
-            enabled: True
-      
+            enabled: True      
