@@ -1,0 +1,7 @@
+- hosts: all
+  gather_facts: true
+  become: true
+  tasks: 
+    - name: print all the ansible facts
+      debug: # ansibe_facts is a way long dict prints all the details about the node
+        var: ansible_facts  # ansible_facts is a variable 'var' of debug module

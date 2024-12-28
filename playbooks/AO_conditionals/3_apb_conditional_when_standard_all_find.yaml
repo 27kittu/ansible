@@ -1,0 +1,11 @@
+- hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: get the fact
+      shell: cat /etc/motd
+      register: out
+   
+    - name: Use the variable in conditional statement
+      shell: echo "motd contains the word hi"
+      when: out.stdout.find('hi') != -1

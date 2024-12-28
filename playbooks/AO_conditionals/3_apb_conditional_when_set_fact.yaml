@@ -1,0 +1,11 @@
+- hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: getting the node's cpu temperature
+      set_fact:
+        temp: ansible_facts['cpu_temperature']
+    
+    - name: check if it is greater than critical
+      command: touch file_temperature && echo "{{ temp }}">file_temperature
+      when: temp | int >95
