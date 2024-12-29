@@ -2,7 +2,7 @@
   hosts: nexusservers
   become: true
   tasks:
-    - name: Installing different Java versions
+    - name: Installing JRE
       apt:
         update_cache: true
         name: openjdk-8-jre
@@ -80,7 +80,6 @@
               WantedBy=multi-user.target 
 
         - name: start nexus
-          become_user: nexus
           service:
             name: nexus.service
             state: started

@@ -1,9 +1,0 @@
-- hosts: webservers
-  become: yes
-  gather_facts: yes
-  tasks:
-    - name: adding content to file
-      copy:
-        dest: /home/ubuntu/sample
-        content: |
-          hi this is to check if the 'copy' using 'content' is working or not

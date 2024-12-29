@@ -1,0 +1,23 @@
+- hosts: k8s_master
+  gather_facts: true
+  become: true
+  tasks:
+    - import_playbook: "./3_apb_k8s_nodes_working.yaml"
+
+    - name: Initialize Kubernates master
+      command: kubeadm init && cp -i /etc/kubernetes/admin.conf $HOME/.kube/config && chown $(id -u):$(id -g) $HOME/.kube/config
+    
+    - name: Install K8s DNS component Weaven net
+      command: kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
+
+    - name: Join all the k8s worker nodes to the master nodes using the token 
+      command:  kubeadm token create --print-join-command
+      register: nodes_join_command
+    
+    - name: Now, run the command in the k8s_workers
+      delegate_to: k8s_workers
+      delegate_facts: true
+      command: "{{ nodes_join_command }}"
+      
+  
+    
