@@ -5,7 +5,7 @@
   become: true
   tasks:
     - name: Initialize Kubernates master
-      command: kubeadm init && cp -i /etc/kubernetes/admin.conf $HOME/.kube/config && chown $(id -u):$(id -g) $HOME/.kube/config
+      command: kubeadm init && cp -f /etc/kubernetes/admin.conf $HOME/.kube/config && chown $(id -u):$(id -g) $HOME/.kube/config
     
     - name: Install K8s DNS component Weaven net
       command: kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
