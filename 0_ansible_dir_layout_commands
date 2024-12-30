@@ -1,0 +1,22 @@
+project layout type-1 command:
+-------------------------------
+- creating directories and sub-directories, creating empty files is resp and also creating 'ansible config' files
+
+mkdir -p {prod,test,stag}/{group_vars,host_vars} {prod,test,stag}/roles && touch {prod,test,stag}/hosts {prod,test,stag}/group_vars/{db_servers,app_servers} {prod,test,stag}/host_vars/{32.43.42.23,32.12.4.5}
+=================================================
+project layout type-2 command:
+------------------------------
+- creating directories and sub-directories, creating empty files is resp and also creating 'ansible config' files
+
+mkdir -p inventory/{prod,test,stag}}/{group_vars,host_vars} && touch inventory/{prod,test,stag}/hosts  inventory/{prod,test,stag}/group_vars/{db_servers,app_servers} inventory/{prod,test,stag}/host_vars/{32.43.42.23,32.12.4.5} && mkdir roles
+=================================================
+create a ansible config file:
+
+for each environment:
+ansible-config init --disabled > prod/ansible.cfg
+
+for all:
+
+for i in prod test stag; do ansible-config init --disabled >$i/ansible.cfg; done
+
+=================================================
