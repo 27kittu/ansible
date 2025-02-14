@@ -1,0 +1,10 @@
+#!/bin/bash
+
+python3 -m venv ~/env1
+source ~/env1/bin/activate
+
+pip install --upgrade pip  ansible-core argcomplete 
+activate-global-python-argcomplete
+source ~/.bash_completion 
+
+ansible
