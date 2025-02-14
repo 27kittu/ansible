@@ -2,6 +2,9 @@
 ---
 # tasks file for alpine_java_env
 - name: install java runtime environment for the packages
-  package: 
+  community.generaral.apk: 
     update_cache: true
-    name: openjdk11-jre
+    name: 
+      - openjdk11-jre
+      - zip
+      - tar

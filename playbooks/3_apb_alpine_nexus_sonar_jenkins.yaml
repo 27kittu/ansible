@@ -40,7 +40,7 @@
 
     - name: Starting the sonarqube
       command: /opt/sonarqube/bin/linux-x86-64/sonar.sh start
----
+
 - hosts: nexus-servers
   become: true
   gather_facts: true
@@ -86,13 +86,13 @@
 
     - name: Starting the nexus
       command: /opt/nexus/bin/nexus.sh start
----
+
 - hosts: jenkins-servers
   become: true
   gather_facts: true
   tasks: 
     - name: installing jenkins package
-      package:
+      community.geeral.apk:
         update_cache: true
         name: 
           - openjdk17
