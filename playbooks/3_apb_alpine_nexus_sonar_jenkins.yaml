@@ -1,1 +1,101 @@
-- hosts:
+- hosts: sonar-servers
+  become: true
+  gather_facts: true
+  roles:
+    - alpine_java_env
+  tasks: 
+    - name: creating a group 'sonar'
+      group:
+        name: sonar
+  
+    - name: creating a user 'sonar'
+      user: 
+        name: sonar
+        system: true
+        shell: /bin/bash
+        group: sonar
+  
+    - name: Pulling official package of sonarqube
+      get_url: 
+        url: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-25.2.0.102705.zip
+        dest: /opt
+      
+    - name: Unzipping the package
+      unarchive: 
+        src:  /opt/sonarqube-25.2.0.102705.zip
+        dest: /opt
+        remote_src: true
+    
+    - name: changing the package name
+      command: mv /opt/sonarqube-25.2.0.102705 /opt/sonarqube
+
+    - name: changing the permissions on the directory
+      file:
+        path: /opt/sonarqube
+        mode: '0755'
+        owner: sonar
+        group: sonar
+        recursive: true
+        remote_src: true
+
+    - name: Starting the sonarqube
+      command: /opt/sonarqube/bin/linux-x86-64/sonar.sh start
+---
+- hosts: nexus-servers
+  become: true
+  gather_facts: true
+  roles:
+    - alpine_java_env
+  tasks: 
+    - name: creating a group 'nexus'
+      group:
+        name: nexus
+  
+    - name: creating a user 'nexus'
+      user: 
+        name: nexus
+        system: true
+        shell: /bin/bash
+        group: nexus
+  
+    - name: Pulling official package of nexus
+      get_url: 
+        url: https://download.sonatype.com/nexus/3/nexus-3.77.1-01-unix.tar.gz
+        dest: /opt
+      
+    - name: Unzipping the package
+      unarchive: 
+        src:  /opt/nexus-3.77.1-01-unix.tar.gz
+        dest: /opt
+        remote_src: true
+    
+    - name: changing the package name
+      command: mv /opt/nexus-3.77.1-01 /opt/nexus
+
+    - name: changing the permissions on the directory
+      file:
+        path: /opt/
+        mode: '0755'
+        owner: nexus
+        group: nexus
+        recursive: true
+        remote_src: true
+
+    - name: changing the package name
+      command: echo 'run_as_user="nexus"'>/opt/nexus/bin/nexus.rc
+
+    - name: Starting the nexus
+      command: /opt/nexus/bin/nexus.sh start
+---
+- hosts: jenkins-servers
+  become: true
+  gather_facts: true
+  tasks: 
+    - name: installing jenkins package
+      package:
+        update_cache: true
+        name: 
+          - openjdk17
+          - jenkins
+    - name: starting the jenkins service
+      command: java -jar /usr/share/webapps/jenkins/jenkins.war

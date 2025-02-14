@@ -1,0 +1,7 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for alpine_java_env
+- name: install java runtime environment for the packages
+  package: 
+    update_cache: true
+    name: openjdk11-jre
