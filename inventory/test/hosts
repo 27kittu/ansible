@@ -1,5 +1,5 @@
 [nexus-servers]
-192.168.0.17 ansible_user=root
+192.168.0.25 ansible_user=root
 #127.0.1.1 ansible_user=ansible ansible_password=ubuntu0027
 #[debian]
 #192.168.174.62 ansible_port=8022 ansible_user=u0_a386 ansible_password=ubuntu0027
@@ -9,13 +9,13 @@
 #54.174.190.186
 
 [sonar-servers]
-192.168.0.16 ansible_user=root
+192.168.0.26 ansible_user=root
 #54.224.184.182
 #100.24.13.113
 #44.204.105.47 ansible_user=ubuntu ansible_ssh_private_key_file=~/Desktop/handy/everest/aws/4/redkey.pem
 
 [jenkins-servers]
-192.168.0.15 ansible_user=root
+192.168.0.27 ansible_user=root
 
 [app-servers]
 #172.31.18.146

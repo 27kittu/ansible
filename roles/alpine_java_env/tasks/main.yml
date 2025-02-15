@@ -2,10 +2,10 @@
 ---
 # tasks file for alpine_java_env
 - name: install java runtime environment for the packages
-  community.generaral.apk: 
+  community.general.apk: 
     update_cache: true
     name: 
-      - openjdk11-jre
+      - openjdk17
       - zip
       - tar
       - procps

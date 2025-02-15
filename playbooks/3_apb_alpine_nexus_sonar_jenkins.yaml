@@ -35,8 +35,7 @@
         mode: '0755'
         owner: sonar
         group: sonar
-        recursive: true
-        remote_src: true
+        recurse: true
 
     - name: Starting the sonarqube
       command: /opt/sonarqube/bin/linux-x86-64/sonar.sh start
@@ -78,8 +77,7 @@
         mode: '0755'
         owner: nexus
         group: nexus
-        recursive: true
-        remote_src: true
+        recurse: true
 
     - name: changing the package name
       command: echo 'run_as_user="nexus"'>/opt/nexus/bin/nexus.rc
@@ -92,7 +90,7 @@
   gather_facts: true
   tasks: 
     - name: installing jenkins package
-      community.geeral.apk:
+      community.general.apk:
         update_cache: true
         name: 
           - openjdk17
